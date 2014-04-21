@@ -9,3 +9,12 @@ visualization::CloudViewer viewer ("Simple Cloud Viewer");
    {
    }
 }
+
+void visualizePCD(PointCloud<PointXYZRGB>::Ptr cloud)
+{
+visualization::CloudViewer viewer ("Simple Cloud Viewer");
+   viewer.showCloud (cloud);
+   while (!viewer.wasStopped ())
+   {
+   }
+}

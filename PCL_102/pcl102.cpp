@@ -8,7 +8,8 @@
 //#include "segmentPlanes.h"
 #include "visualizePCD.h"
 #include "visualizePlanes.h"
-
+#include "addColor.h"
+#include "rgbVisualize.h"
 
 using namespace std;
 using namespace pcl;
@@ -50,9 +51,22 @@ int main (int argc, char** argv)
 	}
 
 	//int numPlanes = segmentPlanes(pointCloudName, filteredCloud);
-
+	visualizePCD(filteredCloud);
+	
+	uint8_t color[10][3] = {255,0,0, //red
+						0,255,0, //green
+						0,0,255, //blue
+						255,255,0, //
+						0,255,255, //
+						255,0,255, //
+						128,128,0, //
+						0,128,128, //
+						128,0,128, //
+						128,128,128, //
+	};
 	PCDWriter writer;
 	PointCloud<PointXYZ>::Ptr cloud_p (new PointCloud<PointXYZ>), cloud_f (new PointCloud<PointXYZ>);
+	PointCloud<PointXYZRGB>:: Ptr cloud_p_color(new PointCloud<PointXYZRGB>);
 	ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients ());
 	PointIndices::Ptr inliers (new PointIndices ());
 	// Create the segmentation object
@@ -74,6 +88,7 @@ int main (int argc, char** argv)
 	vector<ModelCoefficients> allcoefficients;
 	while (filteredCloud->points.size () > 0.3 * nr_points)
 	{
+		i++;
 		// Segment the largest planar component from the remaining cloud
 		seg.setInputCloud (filteredCloud);
 		seg.segment (*inliers, *coefficients);
@@ -90,9 +105,12 @@ int main (int argc, char** argv)
 		extract.setNegative (false);
 		extract.filter (*cloud_p);
 		std::cerr << "PointCloud "<<i<<" representing the planar component: " << cloud_p->width * cloud_p->height << " data points." << std::endl;
-
+		
+		
+		addColor(cloud_p, cloud_p_color, color[i-1][0], color[i-1][1], color[i-1][2]);
 		stringstream ss;
 		ss << pointCloudName << "_plane_"<<i << ".pcd";
+		writer.write<pcl::PointXYZRGB> (ss.str (), *cloud_p_color, false);
 		stringstream sss;
 		sss << pointCloudName << "_plane_"<<i << ".txt";
 		ofstream writeparam(sss.str ());
@@ -103,7 +121,7 @@ int main (int argc, char** argv)
 		extract.setNegative (true);
 		extract.filter (*cloud_f);
 		filteredCloud.swap (cloud_f);
-		i++;
+		
 	}
 	stringstream s1;
 	s1 << pointCloudName << "_parallel.txt";
@@ -132,9 +150,9 @@ int main (int argc, char** argv)
 	writeperp.close();
 	cout<<"Plane Segmentation complete"<<endl; 
 
-	//visualizePCD(filteredCloud);
-	//visualizePlanes(pointCloudName, numPlanes);
-
+	visualizePCD(filteredCloud);
+	//visualizePlanes(pointCloudName, i);
+	rgbVisualize(pointCloudName, i);
 	getchar();
 	return (0);
 }

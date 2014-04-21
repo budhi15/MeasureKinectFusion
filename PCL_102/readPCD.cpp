@@ -7,6 +7,7 @@ using namespace pcl;
 void readPCD(string PCDfileName, sensor_msgs::PointCloud2::Ptr cloud)
 {
 	cout << "PCD READ STARTED"<<endl;
+	cout << "Reading File: "<<PCDfileName<<endl;;
 	PCDReader reader;  
 	if (reader.read (PCDfileName, *cloud) == -1) //* load the file
 	  {
