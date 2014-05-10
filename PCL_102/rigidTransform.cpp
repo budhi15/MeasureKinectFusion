@@ -350,8 +350,8 @@ int correspondences_demo (pcl::PointCloud<pcl::PointXYZ>::Ptr pointstemp1, pcl::
 
 
   bool useSavedNormals = true;
-   bool useSavedKeypoints = false;
-  bool useSavedPFHfeatures = false;
+   bool useSavedKeypoints = true;
+  bool useSavedPFHfeatures = true;
 
   if(useSavedNormals)
   {
@@ -548,11 +548,84 @@ int correspondences_demo (pcl::PointCloud<pcl::PointXYZ>::Ptr pointstemp1, pcl::
   ransac.setInputCloud(keypointsXYZ2);
   ransac.setTargetCloud(keypointsXYZ1);
   ransac.setInlierThreshold(0.05);
-  ransac.setMaxIterations(10000);
+  ransac.setMaxIterations(100000);
   ransac.setInputCorrespondences(pclCor);
   cout<<"Starting RANSAC"<<endl;
   ransac.getCorrespondences(inliers);
   cout<<"RANSAC done"<<endl;
+
+
+ /*  // Create some new point clouds to hold our transformed data
+  pcl::PointCloud<pcl::PointXYZ>::Ptr points_left (new pcl::PointCloud<pcl::PointXYZRGB>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr keypoints_left (new pcl::PointCloud<pcl::PointWithScale>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr points_right (new pcl::PointCloud<pcl::PointXYZRGB>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr keypoints_right (new pcl::PointCloud<pcl::PointWithScale>);
+
+  // Shift the first clouds' points to the left
+  //const Eigen::Vector3f translate (0.0, 0.0, 0.3);
+  const Eigen::Vector3f translate (1, 0.0, 0.0);
+  const Eigen::Quaternionf no_rotation (0, 0, 0, 0);
+  pcl::transformPointCloud (*pointstemp1, *points_left, -translate, no_rotation);
+  pcl::transformPointCloud (*keypointsXYZ1, *keypoints_left, -translate, no_rotation);
+
+  // Shift the second clouds' points to the right
+  pcl::transformPointCloud (*pointstemp2, *points_right, translate, no_rotation);
+  pcl::transformPointCloud (*keypointsXYZ2, *keypoints_right, translate, no_rotation);
+
+  // Add the clouds to the vizualizer
+  pcl::visualization::PCLVisualizer viz;
+  viz.addPointCloud (points_left, "points_left");
+ viz.addPointCloud (points_right, "points_right");
+
+  
+
+  // Draw lines between the best corresponding points
+  for (size_t i = 0; i < inliers.size(); ++i)
+  {
+    
+
+    // Get the pair of points
+	    pcl::PointXYZ &p__left = keypoints_left->points[inliers[i].index_match];
+		pcl::PointXYZRGB p_left;
+		p_left.x = p__left.x;
+		p_left.y = p__left.y;
+		p_left.z = p__left.z;
+	  p_left.r = 255;
+	  p_left.g = 255;
+	  p_left.b = 255;
+	  pcl::PointXYZ &p__right = keypoints_right->points[inliers[i].index_match];
+    pcl::PointXYZRGB p_right;
+	p_right.x = p__right.x;
+		p_right.y = p__right.y;
+		p_right.z = p__right.z;
+	  p_right.r = 255;
+	  p_right.g = 255;
+	  p_right.b = 255;
+
+
+    // Generate a random (bright) color
+    double r = (rand() % 100);
+    double g = (rand() % 100);
+    double b = (rand() % 100);
+    double max_channel = std::max (r, std::max (g, b));
+    r /= max_channel;
+    g /= max_channel;
+    b /= max_channel;
+
+    // Generate a unique string for each line
+    std::stringstream ss ("line");
+    ss << i;
+
+    // Draw the line
+   viz.addLine (p_left, p_right, r, g, b, ss.str ());
+  }
+
+  // Give control over to the visualizer
+  viz.spin ();
+
+
+
+  */
 
 
 
