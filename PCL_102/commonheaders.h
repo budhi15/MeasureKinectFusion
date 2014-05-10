@@ -7,6 +7,7 @@
 #include <sensor_msgs/PointCloud2.h>
 #include <pcl/io/pcd_io.h>
 #include <pcl/point_types.h>
+#include <pcl/point_cloud.h>
 #include <pcl/visualization/cloud_viewer.h>
 #include <pcl/filters/voxel_grid.h>
 #include <pcl/filters/extract_indices.h>
@@ -14,4 +15,20 @@
 #include <pcl/sample_consensus/method_types.h>
 #include <pcl/sample_consensus/model_types.h>
 #include <pcl/segmentation/sac_segmentation.h>
-
+#include <pcl/features/normal_3d.h>
+#include <pcl/registration/icp.h>
+#include <pcl/registration/icp_nl.h>
+#include <pcl/registration/transforms.h>
+#include <pcl/registration/transformation_estimation.h>
+#include <pcl/registration/transformation_estimation_svd.h>
+#include <pcl/registration/transformation_estimation_lm.h>
+#include <pcl/filters/approximate_voxel_grid.h>
+#include <vector>
+#include <Eigen/Core>
+#include "pcl/kdtree/kdtree_flann.h"
+#include "pcl/features/normal_3d.h"
+#include "pcl/features/pfh.h"
+#include "pcl/keypoints/sift_keypoint.h"
+#include <pcl/registration/transforms.h>
+#include <pcl/visualization/pcl_visualizer.h>
+#include <pcl/registration/correspondence_rejection_sample_consensus.h>
