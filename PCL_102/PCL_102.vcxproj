@@ -19,19 +19,28 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="addColor.cpp" />
     <ClCompile Include="convertOBJtoPCD.cpp" />
+    <ClCompile Include="features_demo.cpp" />
     <ClCompile Include="filterPCD.cpp" />
+    <ClCompile Include="pairAlign.cpp" />
     <ClCompile Include="pcl102.cpp" />
     <ClCompile Include="readPCD.cpp" />
+    <ClCompile Include="rgbVisualize.cpp" />
+    <ClCompile Include="rigidTransform.cpp" />
     <ClCompile Include="segmentPlanes.cpp" />
     <ClCompile Include="visualizePCD.cpp" />
     <ClCompile Include="visualizePlanes.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="addColor.h" />
     <ClInclude Include="commonheaders.h" />
     <ClInclude Include="convertOBJtoPCD.h" />
     <ClInclude Include="filterPCD.h" />
+    <ClInclude Include="pairAlign.h" />
     <ClInclude Include="readPCD.h" />
+    <ClInclude Include="rgbVisualize.h" />
+    <ClInclude Include="rigidTransform.h" />
     <ClInclude Include="segmentPlanes.h" />
     <ClInclude Include="visualizePCD.h" />
     <ClInclude Include="visualizePlanes.h" />
@@ -68,15 +77,19 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="PCL.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="PCL.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="PCL.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="PCL.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
@@ -97,8 +110,8 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Program Files\PCL 1.6.0\3rdParty\VTK\lib\vtk-5.8;C:\Program Files\PCL 1.6.0\3rdParty\Qhull\lib;C:\Program Files\PCL 1.6.0\3rdParty\FLANN\lib;C:\Program Files\PCL 1.6.0\3rdParty\Boost\lib;C:\Program Files\PCL 1.6.0\lib;C:\Qt\4.8.0\lib;C:\Program Files\PCL 1.6.0\lib\$(Configuration);C:\Program Files\OpenNI\lib;</AdditionalLibraryDirectories>
-      <AdditionalDependencies>pcl_io_debug.lib;pcl_common_debug.lib;pcl_filters_debug.lib;pcl_segmentation_debug.lib;pcl_visualization_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>"C:\Program Files\PCL 1.6.0\3rdParty\VTK\lib\vtk-5.8";C:\Program Files\PCL 1.6.0\3rdParty\Qhull\lib;C:\Program Files\PCL 1.6.0\3rdParty\FLANN\lib;C:\Program Files\PCL 1.6.0\3rdParty\Boost\lib;C:\Program Files\PCL 1.6.0\lib;C:\Qt\4.8.0\lib;C:\Program Files\PCL 1.6.0\lib\$(Configuration);C:\Program Files\OpenNI\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>pcl_io_debug.lib;pcl_common_debug.lib;pcl_filters_debug.lib;pcl_segmentation_debug.lib;pcl_visualization_debug.lib;pcl_apps_debug.lib;OpenGL32.Lib;pcl_features_debug.lib;pcl_io_ply_debug.lib;pcl_kdtree_debug.lib;pcl_keypoints_debug.lib;pcl_octree_debug.lib;pcl_registration_debug.lib;pcl_sample_consensus_debug.lib;pcl_search_debug.lib;pcl_surface_debug.lib;pcl_tracking_debug.lib;vtkRendering-gd.lib;QVTK-gd.lib;vtkalglib-gd.lib;vtkCharts-gd.lib;vtkCommon-gd.lib;vtkDICOMParser-gd.lib;vtkexoIIc-gd.lib;vtkexpat-gd.lib;vtkFiltering-gd.lib;vtkfreetype-gd.lib;vtkftgl-gd.lib;vtkGenericFiltering-gd.lib;vtkGeovis-gd.lib;vtkGraphics-gd.lib;vtkhdf5-gd.lib;vtkHybrid-gd.lib;vtkImaging-gd.lib;vtkInfovis-gd.lib;vtkIO-gd.lib;vtkjpeg-gd.lib;vtklibxml2-gd.lib;vtkmetaio-gd.lib;vtkNetCDF_cxx-gd.lib;vtkNetCDF-gd.lib;vtkpng-gd.lib;vtkproj4-gd.lib;vtksqlite-gd.lib;vtksys-gd.lib;vtktiff-gd.lib;vtkverdict-gd.lib;vtkViews-gd.lib;vtkVolumeRendering-gd.lib;vtkWidgets-gd.lib;vtkzlib-gd.lib;libboost_thread-vc100-mt-gd-1_49.lib;libboost_date_time-vc100-mt-gd-1_49.lib;libboost_iostreams-vc100-mt-gd-1_49.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

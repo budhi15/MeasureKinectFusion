@@ -36,6 +36,21 @@
     <ClCompile Include="visualizePlanes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="rgbVisualize.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="addColor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pairAlign.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="rigidTransform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="features_demo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="convertOBJtoPCD.h">
@@ -57,6 +72,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="visualizePlanes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="addColor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rgbVisualize.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pairAlign.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rigidTransform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
