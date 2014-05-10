@@ -10,7 +10,11 @@ PointCloud<PointXYZ>::Ptr filterPCD(string filteredCloudFileName, sensor_msgs::P
 		 
   VoxelGrid<sensor_msgs::PointCloud2> sor;
   sor.setInputCloud (inputCloud);
-  sor.setLeafSize (0.01f, 0.01f, 0.01f);
+<<<<<<< HEAD
+  sor.setLeafSize (0.02f, 0.02f, 0.02f);
+=======
+  sor.setLeafSize (0.07f, 0.07f, 0.07f);
+>>>>>>> 793034ab95b91b810581d35dbfdadd923411cd16
   sor.filter (*filtCloud);
 
   std::cerr << "PointCloud after filtering: " << filtCloud->width * filtCloud->height 
