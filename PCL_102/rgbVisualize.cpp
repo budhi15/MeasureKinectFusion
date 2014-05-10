@@ -5,7 +5,7 @@
 using namespace std;
 using namespace pcl;
 
-#define MAX_NUM_PLANES 10
+#define MAX_NUM_PLANES 100
 
 void rgbVisualize(std::string planeFileName, const int numPlanes)
 {

@@ -160,7 +160,87 @@ int main (int argc, char** argv)
 	//int numPlanes = segmentPlanes(pointCloudName, filteredCloud);
 	visualizePCD(mergedCloud);
 	
-	uint8_t color[10][3] = {255,0,0, //red
+	uint8_t color[90][3] = {255,0,0, //red
+						0,255,0, //green
+						0,0,255, //blue
+						255,255,0, //
+						0,255,255, //
+						255,0,255, //
+						128,128,0, //
+						0,128,128, //
+						128,0,128, //
+						128,128,128, //
+						255,0,0, //red
+						0,255,0, //green
+						0,0,255, //blue
+						255,255,0, //
+						0,255,255, //
+						255,0,255, //
+						128,128,0, //
+						0,128,128, //
+						128,0,128, //
+						128,128,128, //
+						255,0,0, //red
+						0,255,0, //green
+						0,0,255, //blue
+						255,255,0, //
+						0,255,255, //
+						255,0,255, //
+						128,128,0, //
+						0,128,128, //
+						128,0,128, //
+						128,128,128, //
+						255,0,0, //red
+						0,255,0, //green
+						0,0,255, //blue
+						255,255,0, //
+						0,255,255, //
+						255,0,255, //
+						128,128,0, //
+						0,128,128, //
+						128,0,128, //
+						128,128,128, //
+						255,0,0, //red
+						0,255,0, //green
+						0,0,255, //blue
+						255,255,0, //
+						0,255,255, //
+						255,0,255, //
+						128,128,0, //
+						0,128,128, //
+						128,0,128, //
+						128,128,128, //
+						255,0,0, //red
+						0,255,0, //green
+						0,0,255, //blue
+						255,255,0, //
+						0,255,255, //
+						255,0,255, //
+						128,128,0, //
+						0,128,128, //
+						128,0,128, //
+						128,128,128, //
+						255,0,0, //red
+						0,255,0, //green
+						0,0,255, //blue
+						255,255,0, //
+						0,255,255, //
+						255,0,255, //
+						128,128,0, //
+						0,128,128, //
+						128,0,128, //
+						128,128,128, //
+						255,0,0, //red
+						0,255,0, //green
+						0,0,255, //blue
+						255,255,0, //
+						0,255,255, //
+						255,0,255, //
+						128,128,0, //
+						0,128,128, //
+						128,0,128, //
+						128,128,128, //
+						255,0,0, //red
 						0,255,0, //green
 						0,0,255, //blue
 						255,255,0, //
@@ -173,6 +253,7 @@ int main (int argc, char** argv)
 	};
 	PCDWriter writer;
 	PointCloud<PointXYZ>::Ptr cloud_p (new PointCloud<PointXYZ>), cloud_f (new PointCloud<PointXYZ>);
+	vector<PointXYZ> planecenter;
 	PointCloud<PointXYZRGB>:: Ptr cloud_p_color(new PointCloud<PointXYZRGB>);
 	ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients ());
 	PointIndices::Ptr inliers (new PointIndices ());
@@ -193,7 +274,7 @@ int main (int argc, char** argv)
 	cout<<"Plane Segmentation started"<<endl;
 	// While 30% of the original cloud is still there
 	vector<ModelCoefficients> allcoefficients;
-	while (mergedCloud->points.size () > 0.3 * nr_points)
+	while (mergedCloud->points.size () > 0.5 * nr_points)
 	{
 		i++;
 		// Segment the largest planar component from the remaining cloud
@@ -215,6 +296,18 @@ int main (int argc, char** argv)
 		
 		
 		addColor(cloud_p, cloud_p_color, color[i-1][0], color[i-1][1], color[i-1][2]);
+
+		PointXYZ pcenter(0,0,0);
+		for (size_t i = 0; i < cloud_p->points.size(); i++) {
+			pcenter.x += cloud_p->points[i].x;
+			pcenter.y += cloud_p->points[i].y;
+			pcenter.z += cloud_p->points[i].z;
+		}
+		pcenter.x /= cloud_p->points.size();
+		pcenter.y /= cloud_p->points.size();
+		pcenter.z /= cloud_p->points.size();
+		planecenter.push_back(pcenter);
+
 		stringstream ss;
 		ss << folder << pointCloudName << "_plane_"<<i << ".pcd";
 		writer.write<pcl::PointXYZRGB> (ss.str (), *cloud_p_color, false);
@@ -236,6 +329,14 @@ int main (int argc, char** argv)
 	stringstream s2;
 	s2 << folder << pointCloudName << "_perp.txt";
 	ofstream writeperp(s2.str ());
+	double record[3][3];
+	for (int i=0;i<3;i++)
+	{
+		for (int j=0;j<3;j++)
+		{
+			record[i][j]=0;
+		}
+	}
 	for (int i=0;i<allcoefficients.size();i++)
 	{
 		for (int j=0;j<allcoefficients.size();j++)
@@ -248,10 +349,39 @@ int main (int argc, char** argv)
 				}
 				if (abs(allcoefficients[i].values[0]*allcoefficients[j].values[0]+allcoefficients[i].values[1]*allcoefficients[j].values[1]+allcoefficients[i].values[2]*allcoefficients[j].values[2])>=0.9)
 				{
-					writeparallel << "pair: " << i << " " << j << endl;
+					double dist = abs(allcoefficients[i].values[0]*planecenter[j].x+allcoefficients[i].values[1]*planecenter[j].y+allcoefficients[i].values[2]*planecenter[j].z+allcoefficients[i].values[3])/sqrt(pow(allcoefficients[i].values[0],2)+pow(allcoefficients[i].values[1],2)+pow(allcoefficients[i].values[2],2));
+					if (abs(allcoefficients[i].values[0])>0.9 && dist>record[0][2])
+					{
+						record[0][2]=dist;
+						record[0][0]=i;
+						record[0][1]=j;
+					}
+					if (abs(allcoefficients[i].values[1])>0.9 && dist>record[1][2])
+					{
+						record[1][2]=dist;
+						record[1][0]=i;
+						record[1][1]=j;
+					}
+					if (abs(allcoefficients[i].values[2])>0.9 && dist>record[2][2])
+					{
+						record[2][2]=dist;
+						record[2][0]=i;
+						record[2][1]=j;
+					}
+					writeparallel << "pair: " << i << " " << j << " " << dist << endl;
+					writeparallel << allcoefficients[i].values[0] << " " << allcoefficients[i].values[1] << " " << allcoefficients[i].values[2] << " " << allcoefficients[i].values[3] << endl;
+					writeparallel << allcoefficients[j].values[0] << " " << allcoefficients[j].values[1] << " " << allcoefficients[j].values[2] << " " << allcoefficients[j].values[3] << endl;
 				}
 			}
 		}
+	}
+	for (int i=0;i<3;i++)
+	{
+		for (int j=0;j<3;j++)
+		{
+			writeparallel << record[i][j] << " "; 
+		}
+		writeparallel << endl;
 	}
 	writeparallel.close();
 	writeperp.close();
@@ -259,7 +389,7 @@ int main (int argc, char** argv)
 
 	visualizePCD(mergedCloud);
 	//visualizePlanes(pointCloudName, i);
-	rgbVisualize(pointCloudName, i);
+	rgbVisualize(folder+pointCloudName, i);
 	getchar();
 	return (0);
 }
