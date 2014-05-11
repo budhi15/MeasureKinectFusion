@@ -124,10 +124,10 @@ int main (int argc, char** argv)
 		correspondences_demo(filteredCloud[0], filteredCloud[1], temp11.c_str(), transMat);
 		PointCloud<PointXYZ>::Ptr temper (new PointCloud<PointXYZ>);
 		transformPointCloud (*filteredCloud[1], *temper, transMat);
-		 pcl::visualization::PCLVisualizer viz;
+	/*	 pcl::visualization::PCLVisualizer viz;
 		viz.addPointCloud (filteredCloud[1], "original");
 		viz.addPointCloud (temper, "rotated");
-		viz.spin ();
+		viz.spin ();*/
 
 		pcl::visualization::PCLVisualizer viz1;
 		viz1.addPointCloud (filteredCloud[0], "cloud0");
@@ -135,12 +135,20 @@ int main (int argc, char** argv)
 		viz1.spin ();
 		PointCloud<PointXYZ>::Ptr temp (new PointCloud<PointXYZ>), tempPtr (new PointCloud<PointXYZ>);
 		Eigen::Matrix4f transform;
-		pairAlign (filteredCloud[0], filteredCloud[1], temp, transform, true);
+		cout<<"Running ICP"<<endl;
+		//pairAlign (temper, filteredCloud[0], temp, transform, true);
+		//pairAlign1 (temper, filteredCloud[0], temp, transform);
+		cout<<"ICP done"<<endl;
 		pcl::transformPointCloud (*temp, *tempPtr, transform);
 		mergedCloud = tempPtr;
 		std::stringstream ss;
 		ss << folder << pointCloudName << "_merged.pcd";
 		//io::savePCDFileASCII (ss.str (), *mergedCloud);
+
+		 pcl::visualization::PCLVisualizer viz2;
+		viz2.addPointCloud (mergedCloud, "merged");
+		
+		viz2.spin ();
 	}
 
 	else

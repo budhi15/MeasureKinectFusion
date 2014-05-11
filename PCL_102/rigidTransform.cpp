@@ -398,7 +398,7 @@ int correspondences_demo (pcl::PointCloud<pcl::PointXYZ>::Ptr pointstemp1, pcl::
   }
   else
   {
-  const float min_scale = 0.000038;
+  const float min_scale = 0.0003;
   const int nr_octaves = 3;
   const int nr_octaves_per_scale = 3;
   const float min_contrast = 0.0;
@@ -548,11 +548,20 @@ int correspondences_demo (pcl::PointCloud<pcl::PointXYZ>::Ptr pointstemp1, pcl::
   ransac.setInputCloud(keypointsXYZ2);
   ransac.setTargetCloud(keypointsXYZ1);
   ransac.setInlierThreshold(0.05);
-  ransac.setMaxIterations(100000);
+  ransac.setMaxIterations(10000);
   ransac.setInputCorrespondences(pclCor);
   cout<<"Starting RANSAC"<<endl;
   ransac.getCorrespondences(inliers);
   cout<<"RANSAC done"<<endl;
+
+
+  pcl::Correspondences inliers1;//(new pcl::Correspondences());
+  pcl::registration::CorrespondenceRejectorTrimmed ransac1;
+  ransac1.setInputCorrespondences(pclCor);
+  ransac1.setMinCorrespondences(4);
+  ransac1.setOverlapRadio(0.005);
+  ransac1.getCorrespondences(inliers1);
+
 
 
  /*  // Create some new point clouds to hold our transformed data
@@ -630,10 +639,16 @@ int correspondences_demo (pcl::PointCloud<pcl::PointXYZ>::Ptr pointstemp1, pcl::
 
 
   TransformationEstimationSVD<pcl::PointXYZ, pcl::PointXYZ> transformer;
-  //Eigen::Matrix4f transMat;
-  //transformer.estimateRigidTransformation(*keypointsXYZ2, src_cor, *keypointsXYZ1, target_cor, transMat);
-  transformer.estimateRigidTransformation(*keypointsXYZ2, *keypointsXYZ1, inliers, transMat);
+  Eigen::Matrix4f transMat0;
+  Eigen::Matrix4f transMat1;
+  Eigen::Matrix4f transMatOrig;
 
+  //transformer.estimateRigidTransformation(*keypointsXYZ2, src_cor, *keypointsXYZ1, target_cor, transMat);
+  transformer.estimateRigidTransformation(*keypointsXYZ2, *keypointsXYZ1, inliers, transMat0);
+  transformer.estimateRigidTransformation(*keypointsXYZ2, *keypointsXYZ1, inliers1, transMat1);
+  transMatOrig << 0.43, 0.19, -0.88, -0.65, -0.20, 0.97, 0.11, -0.04, 0.88, 0.13, 0.45, 0.05, 0.00, 0.00, 0.00, 1.00;
+
+  transMat = transMat0;
   return (0);
 }
 
